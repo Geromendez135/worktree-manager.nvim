@@ -8,7 +8,7 @@ Optionally integrates with [auto-session](https://github.com/rmagatti/auto-sessi
 
 - Neovim >= 0.10
 - [fzf-lua](https://github.com/ibhagwan/fzf-lua)
-- [auto-session](https://github.com/rmagatti/auto-session) (optional, for session persistence)
+- [auto-session](https://github.com/rmagatti/auto-session) (installed by default, can be opted out)
 
 ## Installation
 
@@ -17,7 +17,10 @@ Optionally integrates with [auto-session](https://github.com/rmagatti/auto-sessi
 ```lua
 {
   "geronimomendez/worktree-manager.nvim",
-  dependencies = { "ibhagwan/fzf-lua" },
+  dependencies = {
+    "ibhagwan/fzf-lua",
+    "rmagatti/auto-session",
+  },
   config = function()
     require("worktree-manager").setup()
   end,
@@ -28,14 +31,32 @@ Optionally integrates with [auto-session](https://github.com/rmagatti/auto-sessi
 
 ```lua
 require("worktree-manager").setup({
-  -- Set to false to disable :Wt and :Wtd commands
+  -- Base directory for new worktrees (relative to cwd or absolute)
+  worktree_dir = ".worktrees",
+  -- Set to false to disable auto-session integration
+  session = true,
+  -- Set to false to disable :Wt, :Wtc and :Wtd commands
   commands = true,
   keymaps = {
     -- Set to false to disable a keymap
     switch = "<leader>gw",
+    create = "<leader>gcw",
     delete = "<leader>grw",
   },
 })
+
+```
+
+To opt out of auto-session (no session save/restore when switching worktrees):
+
+```lua
+{
+  "geronimomendez/worktree-manager.nvim",
+  dependencies = { "ibhagwan/fzf-lua" },
+  config = function()
+    require("worktree-manager").setup({ session = false })
+  end,
+}
 ```
 
 ## Usage
@@ -43,6 +64,7 @@ require("worktree-manager").setup({
 | Action           | Default keymap | Command |
 |------------------|----------------|---------|
 | Switch worktree  | `<leader>gw`   | `:Wt`   |
+| Create worktree  | `<leader>gcw`  | `:Wtc`  |
 | Delete worktree  | `<leader>grw`  | `:Wtd`  |
 
 ### Switch worktree
@@ -53,6 +75,12 @@ Opens an fzf picker with all non-bare worktrees. Selecting one will:
 2. Close sidebars and wipe all buffers
 3. Change directory to the selected worktree
 4. Restore the session for that worktree (if auto-session is installed)
+
+### Create worktree
+
+Opens an fzf picker with all local and remote branches, plus a `[new branch]` option. Selecting an existing branch creates a worktree for it; selecting `[new branch]` prompts for a name and creates both the branch and the worktree.
+
+New worktrees are placed under the configured `worktree_dir` (defaults to `.worktrees` in the current working directory). Creation runs asynchronously.
 
 ### Delete worktree
 
