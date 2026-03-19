@@ -16,7 +16,7 @@ Optionally integrates with [auto-session](https://github.com/rmagatti/auto-sessi
 
 ```lua
 {
-  "geronimomendez/worktree-manager.nvim",
+  "Geromendez135/worktree-manager.nvim",
   dependencies = {
     "ibhagwan/fzf-lua",
     "rmagatti/auto-session",
@@ -51,7 +51,7 @@ To opt out of auto-session (no session save/restore when switching worktrees):
 
 ```lua
 {
-  "geronimomendez/worktree-manager.nvim",
+  "Geromendez135/worktree-manager.nvim",
   dependencies = { "ibhagwan/fzf-lua" },
   config = function()
     require("worktree-manager").setup({ session = false })
