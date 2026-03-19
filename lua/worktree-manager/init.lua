@@ -81,6 +81,9 @@ local function switch_to_worktree(wt_path)
 
   local auto_session = get_auto_session()
 
+
+  local auto_session = get_auto_session()
+
   if auto_session then
     auto_session.SaveSession()
   end
@@ -95,6 +98,9 @@ local function switch_to_worktree(wt_path)
   if auto_session then
     auto_session.RestoreSession()
   end
+
+  -- Re-edit current buffer to trigger BufRead/FileType and start LSP
+  vim.cmd("edit")
 
   vim.notify("Switched to worktree: " .. wt_path, vim.log.levels.INFO)
 end

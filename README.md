@@ -85,3 +85,15 @@ New worktrees are placed under the configured `worktree_dir` (defaults to `.work
 ### Delete worktree
 
 Opens an fzf picker with worktrees (excluding the current one). After selecting, prompts for confirmation with options to force-delete. Removal runs asynchronously so Neovim stays responsive.
+
+## Notes for mise users
+
+[mise](https://mise.jdx.dev/) requires explicit trust for config files in new paths. When you create a worktree, mise will not trust the `mise.toml` in the new directory, which can cause LSP servers to crash.
+
+To fix this, add your worktrees directory to mise's trusted paths:
+
+```bash
+mise settings set trusted_config_paths "~/your-project/.worktrees"
+```
+
+This is not needed for other version managers like rbenv, asdf, or nvm.
